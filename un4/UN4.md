@@ -1,4 +1,4 @@
-## Jest Testando código assíncrono
+### Jest Testando código assíncrono
 
 Testar código assíncrono é uma parte crucial do desenvolvimento de software, uma vez que muitas operações em JavaScript, como chamadas a APIs, manipulação de banco de dados e temporizadores, são assíncronas por natureza. O Jest oferece várias maneiras de lidar com testes assíncronos, sendo as mais comuns utilizando `Promises` e a sintaxe `async/await`.
 
@@ -32,3 +32,37 @@ test('Exemplo com expect.assertions', async () => {
   const resultado2 = await funcaoAssincrona2();
   expect(resultado2).toBe('Valor Esperado 2');
 });
+``` 
+
+### Testando callbacks: 
+
+Testar funções assíncronas com callbacks no Jest envolve o uso do método `done`, que é uma função fornecida pelo Jest para sinalizar o término do teste.
+
+Quando você está lidando com testes assíncronos no Jest usando callbacks e não utiliza o `done` para sinalizar o término do teste, o Jest pode não aguardar a execução das operações assíncronas, e o teste pode ser encerrado antes que as asserções sejam feitas ou então, caso .
+
+Ou então se você esquecer de chamar `done()` no teste, ou se mesmo se a função de callback não for chamada, o Jest pode considerar o teste como concluído, mesmo que as operações assíncronas ainda estejam pendentes.
+
+```js 
+
+// Função assíncrona que usa callbacks
+function fetchDataWithCallback(callback) {
+  setTimeout(() => {
+    const data = 'Dados Esperados';
+    callback(data);
+  }, 1000);
+}
+
+test('Exemplo com Callbacks e expect.assertions', (done) => {
+  expect.assertions(1);
+
+  fetchDataWithCallback((resultado) => {
+    expect(resultado).toBe('Dados Esperados');
+    done(); // Indica ao Jest que o teste está completo
+  });
+});
+
+```
+
+
+
+
